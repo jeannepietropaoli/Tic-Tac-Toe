@@ -1,9 +1,6 @@
 const PLAYER = (sign, name) => {
     const GET_SIGN = () => sign;
     let score = 0;
-    const DISPLAY_SCORE = () => {
-
-    }
     return {
         GET_SIGN,
         score,
@@ -11,13 +8,15 @@ const PLAYER = (sign, name) => {
     }
 }
 
-let playerOne = PLAYER('X', 'First player');
+let playerOne = PLAYER('X' , 'First player');
 let playerTwo = PLAYER('O', 'Second player');
+const PLAYERS = [playerOne, playerTwo];
+let currentPlayer = PLAYERS[1];
 
 const GAMEBOARD = (() => {
     const GAMEBOARD_CONTAINER = document.querySelector('.gameBoard');
     const GAMEBOX_VALUES = [];
-    const CREATE = () => {
+    const CREATE_GAMEBOX_VALUES = () => {
         for (let i = 0; i<9; i++){
             GAMEBOX_VALUES[i] = '';
         }
@@ -31,20 +30,15 @@ const GAMEBOARD = (() => {
             GAMEBOARD_CONTAINER.appendChild(GAMEBOX);
         }
     }
-    const PLAYERS = [playerOne, playerTwo];
-    let currentPlayer = PLAYERS[0];
     const CHANGE_BOX_VALUE = (event, gameBox) => {
-        console.log(GAMEBOX_VALUES);
         GAMEBOX_VALUES[event.target.getAttribute('data-index')] = currentPlayer.GET_SIGN();
         gameBox.textContent = GAMEBOX_VALUES[event.target.getAttribute('data-index')];
-        console.log(GAMEBOX_VALUES);
     }
     const CHECK_IF_BOARD_FULL = () => {
-        GAMEBOX_VALUES.every(value => value !== '');
+        return GAMEBOX_VALUES.every(value => value !== '');
     }
     const CHECK_IF_WINNER = () => {
         let isThereWinner = false;
-        console.log('jhkjhkjh')
         for (let i=0; i<=6; i = i+3){
             if (GAMEBOX_VALUES[i]!=='' && GAMEBOX_VALUES[i] === GAMEBOX_VALUES[i+1] && GAMEBOX_VALUES[i] === GAMEBOX_VALUES[i+2]) return isThereWinner = true;
         }
@@ -55,8 +49,8 @@ const GAMEBOARD = (() => {
         if (GAMEBOX_VALUES[0]!=='' && GAMEBOX_VALUES[0] === GAMEBOX_VALUES[4] && GAMEBOX_VALUES[0] === GAMEBOX_VALUES[8] ||
         GAMEBOX_VALUES[2]!=='' && GAMEBOX_VALUES[2] === GAMEBOX_VALUES[4] && GAMEBOX_VALUES[2] === GAMEBOX_VALUES[6]) return isThereWinner = true;
     }
+    const PLAYER_TURN_DISPLAY = document.querySelector('.playerTurns');
     const GAME_FLOW_BOARD = () => {
-        const PLAYER_TURN_DISPLAY = document.querySelector('.playerTurns');
         if (CHECK_IF_WINNER()){
             PLAYER_TURN_DISPLAY.textContent = `${currentPlayer.name} wins the game !`;
             currentPlayer.score ++;
@@ -74,50 +68,46 @@ const GAMEBOARD = (() => {
         const GAMEBOXES = GAMEBOARD_CONTAINER.querySelectorAll('div');
         GAMEBOXES.forEach(gameBox => {
             gameBox.addEventListener('click', (e)=> {
-                CHANGE_BOX_VALUE(e, gameBox);
-                GAME_FLOW_BOARD();
+                if (!CHECK_IF_WINNER()){
+                    CHANGE_BOX_VALUE(e, gameBox);
+                    GAME_FLOW_BOARD();
+                }
             }, {once : true});
         })
     }
     const INIT_BOARD = () => {
-        CREATE();
+        CREATE_GAMEBOX_VALUES();
         DISPLAY_BOARD();
         GAME_FLOW_BOARD();
+    }
+    const RESET_BOARD = () => {
+        const GAMEBOXES = GAMEBOARD_CONTAINER.querySelectorAll('div');
+            GAMEBOXES.forEach(box => box.parentElement.removeChild(box));
+            for (let i=0; i<GAMEBOX_VALUES.length; i++) GAMEBOX_VALUES[i]= '';
+            currentPlayer = PLAYERS[1];
     }
     const RESET = () => {
         const RESET_BTN = document.querySelector('#resetBtn');
         RESET_BTN.addEventListener('click', () => {
-            const GAMEBOXES = GAMEBOARD_CONTAINER.querySelectorAll('div');
-            GAMEBOXES.forEach(gameBox => {
-                gameBox.parentElement.removeChild(gameBox);
-            })
-            CREATE();
-            DISPLAY_BOARD();
-            PLAY();
-            currentPlayer = PLAYERS[0];
+            RESET_BOARD();
             playerOne.score = 0;
-            playerTwo.score =0;
-            GAME_FLOW_BOARD();
+            playerTwo.score = 0;
+            GAME_FLOW();
         })
-    };
-
-    /* const RESET_BTN = document.querySelector('#resetBtn');
-    const GAMEBOXES = GAMEBOARD_CONTAINER.querySelectorAll('div');
-    RESET_BTN.addEventListener('click', () => {
-        for (let i=0; i<GAMEBOX_VALUES.length; i++){
-            GAMEBOX_VALUES[i] = '';
-        }           
-        GAMEBOXES.forEach(gameBox => gameBox.textContent = '' )
-    }) */
+    }
+    const ONE_MORE_ROUND = () => {
+        const ONE_MORE_ROUND_BTN = document.querySelector('#oneMoreRound');
+        ONE_MORE_ROUND_BTN.addEventListener('click', () => {
+            RESET_BOARD();
+            GAME_FLOW();
+        })
+    }
 
     return {
         INIT_BOARD,
-        GAMEBOX_VALUES,
         PLAY,
-        PLAYERS,
-        currentPlayer, 
         RESET,
-        CHECK_IF_WINNER
+        ONE_MORE_ROUND
     }
 })()
 
@@ -131,9 +121,14 @@ const SCOREBOARD = (() => {
     }
 })()
 
-const GAME_FLOW = (() => {
-    SCOREBOARD.SCOREBOARD_DISPLAY();
-    GAMEBOARD.INIT_BOARD();
-    GAMEBOARD.PLAY();
-    GAMEBOARD.RESET();
-})()
+const GAME_FLOW = () => {
+    return  Object.assign({},
+    SCOREBOARD.SCOREBOARD_DISPLAY(),
+    GAMEBOARD.INIT_BOARD(),
+    GAMEBOARD.PLAY(),
+    GAMEBOARD.RESET(),
+    GAMEBOARD.ONE_MORE_ROUND()
+    )
+}
+
+GAME_FLOW();
