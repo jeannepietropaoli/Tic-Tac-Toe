@@ -44,14 +44,34 @@ const GAMEBOARD = (() => {
     const CHECK_IF_WINNER = () => {
         let isThereWinner = false;
         for (let i=0; i<=6; i = i+3){
-            if (GAMEBOX_VALUES[i]!=='' && GAMEBOX_VALUES[i] === GAMEBOX_VALUES[i+1] && GAMEBOX_VALUES[i] === GAMEBOX_VALUES[i+2]) return isThereWinner = true;
+            if (GAMEBOX_VALUES[i]!=='' && GAMEBOX_VALUES[i] === GAMEBOX_VALUES[i+1] && GAMEBOX_VALUES[i] === GAMEBOX_VALUES[i+2]){
+                for (let j=i; j<i+3; j++){
+                    document.querySelector(`[data-index='${j}']`).style.backgroundColor = '#4ab078';
+                }
+                return isThereWinner = true;
+            }
         }
-        for (let j=0; j<=2; j++){
-            if (GAMEBOX_VALUES[j]!=='' && GAMEBOX_VALUES[j] === GAMEBOX_VALUES[j+3] && GAMEBOX_VALUES[j] === GAMEBOX_VALUES[j+6]) return isThereWinner = true;
+        for (let i=0; i<=2; i++){
+            if (GAMEBOX_VALUES[i]!=='' && GAMEBOX_VALUES[i] === GAMEBOX_VALUES[i+3] && GAMEBOX_VALUES[i] === GAMEBOX_VALUES[i+6]){
+                for (let j=i; j<=i+6; j=j+3){
+                    document.querySelector(`[data-index='${j}']`).style.backgroundColor = '#4ab078';
+                }
+                return isThereWinner = true;
+            } 
         }
         
-        if (GAMEBOX_VALUES[0]!=='' && GAMEBOX_VALUES[0] === GAMEBOX_VALUES[4] && GAMEBOX_VALUES[0] === GAMEBOX_VALUES[8] ||
-        GAMEBOX_VALUES[2]!=='' && GAMEBOX_VALUES[2] === GAMEBOX_VALUES[4] && GAMEBOX_VALUES[2] === GAMEBOX_VALUES[6]) return isThereWinner = true;
+        if (GAMEBOX_VALUES[0]!=='' && GAMEBOX_VALUES[0] === GAMEBOX_VALUES[4] && GAMEBOX_VALUES[0] === GAMEBOX_VALUES[8]) {
+            for (let i=0; i<=8; i=i+4){
+                document.querySelector(`[data-index='${i}']`).style.backgroundColor = '#4ab078';
+            }
+            return isThereWinner = true;
+        }
+        if (GAMEBOX_VALUES[2]!=='' && GAMEBOX_VALUES[2] === GAMEBOX_VALUES[4] && GAMEBOX_VALUES[2] === GAMEBOX_VALUES[6]){
+            for (let i=2; i<=6; i=i+2){
+                document.querySelector(`[data-index='${i}']`).style.backgroundColor = '#4ab078';
+            }
+            return isThereWinner = true;
+        }
     }
     const PLAYER_TURN_DISPLAY = document.querySelector('.playerTurns');
     const GAME_FLOW_BOARD = () => {
@@ -95,12 +115,12 @@ const GAMEBOARD = (() => {
             GAMEBOXES.forEach(box => box.parentElement.removeChild(box));
             for (let i=0; i<GAMEBOX_VALUES.length; i++) GAMEBOX_VALUES[i]= '';
             currentPlayer = PLAYERS[1];
+            PLAYER_TURN_DISPLAY.style.color = '#2757A3';
+            PLAYERS.forEach(player => document.querySelector(`#${player.varName}`).style.border = 'none')
     }
     const RESET = () => {
         const RESET_BTN = document.querySelector('#resetBtn');
         RESET_BTN.addEventListener('click', () => {
-            PLAYER_TURN_DISPLAY.style.textShadow = 'none';
-            document.querySelector(`#${currentPlayer.varName}`).style.border = 'none';
             RESET_BOARD();
             playerOne.score = 0;
             playerTwo.score = 0;
