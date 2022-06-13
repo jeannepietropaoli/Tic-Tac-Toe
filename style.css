@@ -33,6 +33,7 @@ h1 {
 
 .gameBox:hover {
     cursor: pointer;
+    background-color: #2757A3;
 }
 
 .gameBoard {
