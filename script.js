@@ -84,6 +84,7 @@ const GAMEBOARD = (() => {
             SCOREBOARD.SCOREBOARD_DISPLAY();
         } 
         else if (CHECK_IF_BOARD_FULL()) {
+            PLAYER_TURN_DISPLAY.style.color = '#F29200';
             PLAYER_TURN_DISPLAY.textContent = 'It\'s a tie !'
         }
         else {
