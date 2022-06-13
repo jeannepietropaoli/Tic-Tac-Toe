@@ -1,8 +1,8 @@
 .gameBox {
-    height: 100px;
-    width: 100px;
     background-color: aqua;
     display: flex;
+    width: 155px;
+    height: 155px;
     justify-content: center;
     align-items: center;
 }
@@ -11,4 +11,51 @@
     display: grid;
     grid-template: repeat(3, min-content) / repeat(3, min-content);
     gap: 10px;
+}
+
+.gameContainer > img {
+    height: 450px;
+    width: auto;
+   align-self: flex-end;
+   padding: 5px;
+}
+
+.playerTurns {
+    width: fit-content;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.gameContainer {
+    display: flex;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+}
+
+body {
+    border: 1px solid red;
+    margin: 0;
+    padding: 0;
+}
+
+.gameBoardContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.scoreBoardContainer {
+    position: relative;
+    top: 100px;
+    padding: 20px;
+    min-width: fit-content;
+}
+
+.scoreBoardContainer button {
+    display: block;
 }

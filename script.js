@@ -8,8 +8,8 @@ const PLAYER = (sign, name) => {
     }
 }
 
-let playerOne = PLAYER('X' , 'First player');
-let playerTwo = PLAYER('O', 'Second player');
+let playerOne = PLAYER("url('puzzleP1.png')" , 'First player');
+let playerTwo = PLAYER("url('puzzleP2.png')" , 'Second player');
 const PLAYERS = [playerOne, playerTwo];
 let currentPlayer = PLAYERS[1];
 
@@ -32,7 +32,10 @@ const GAMEBOARD = (() => {
     }
     const CHANGE_BOX_VALUE = (event, gameBox) => {
         GAMEBOX_VALUES[event.target.getAttribute('data-index')] = currentPlayer.GET_SIGN();
-        gameBox.textContent = GAMEBOX_VALUES[event.target.getAttribute('data-index')];
+        gameBox.style.backgroundImage = GAMEBOX_VALUES[event.target.getAttribute('data-index')];
+        gameBox.style.backgroundSize = '80%';
+        gameBox.style.backgroundRepeat = 'no-repeat';
+        gameBox.style.backgroundPosition = 'center';
     }
     const CHECK_IF_BOARD_FULL = () => {
         return GAMEBOX_VALUES.every(value => value !== '');
