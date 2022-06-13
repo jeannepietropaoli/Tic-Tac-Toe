@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Staatliches&display=swap');
+
 .gameBox {
-    background-color: aqua;
+    background-color: white;
     display: flex;
     width: 155px;
     height: 155px;
@@ -7,21 +9,36 @@
     align-items: center;
 }
 
+.gameBox:hover {
+    cursor: pointer;
+}
+
 .gameBoard {
     display: grid;
     grid-template: repeat(3, min-content) / repeat(3, min-content);
     gap: 10px;
+    margin-bottom: 2px;
+    background-color: #F29200;
 }
 
 .gameContainer > img {
     height: 450px;
     width: auto;
    align-self: flex-end;
-   padding: 5px;
+   position: relative;
+   bottom: 0;
+}
+
+#bk {
+    height: 6px;
+    width: 70%;
+    background-color: #2757A3;
+    margin: auto;
 }
 
 .playerTurns {
     width: fit-content;
+    color: #2757A3;
 }
 
 body {
@@ -36,12 +53,16 @@ body {
 
 h1 {
     text-align: center;
+    font-weight: 200;
+    font-size: 45px;
+    color: #2757A3;
+    text-shadow: 1px 1px #F29200, 2px 2px #F29200;
 }
 
 body {
-    border: 1px solid red;
     margin: 0;
     padding: 0;
+    font-family: 'Staatliches', cursive;
 }
 
 .gameBoardContainer {
@@ -50,12 +71,43 @@ body {
 }
 
 .scoreBoardContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: relative;
     top: 100px;
     padding: 20px;
-    min-width: fit-content;
+    width: 200px;
+}
+
+.scoreBoardContainer > p {
+    color: #2757A3;
+    text-shadow: 1px 1px #F29200;
+    font-size: 24px;
+}
+
+.scoreBoardContainer > p span {
+    padding: 5px ;
 }
 
 .scoreBoardContainer button {
     display: block;
+    padding: 5px 18px;
+    background-color: white;
+    border: 2px solid #2757A3;
+    box-shadow: 1px 1px #2757A3, 2px 2px #2757A3, 3px 3px #2757A3;
+    margin: 15px;
+    font-family: 'Staatliches', cursive;
+    color: #2757A3;
+}
+
+.scoreBoardContainer button:hover {
+    border: 2px solid #F29200;
+    box-shadow: 1px 1px #F29200, 2px 2px #F29200, 3px 3px #F29200;
+    cursor: pointer;
+    color: #F29200;
+}
+
+.scoreBoard {
+    text-align: center;
 }

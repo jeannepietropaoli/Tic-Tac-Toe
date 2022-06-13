@@ -1,15 +1,16 @@
-const PLAYER = (sign, name) => {
+const PLAYER = (sign, name, varName) => {
     const GET_SIGN = () => sign;
     let score = 0;
     return {
         GET_SIGN,
         score,
-        name
+        name, 
+        varName
     }
 }
 
-let playerOne = PLAYER("url('puzzleP1.png')" , 'First player');
-let playerTwo = PLAYER("url('puzzleP2.png')" , 'Second player');
+let playerOne = PLAYER("url('puzzleP1.png')" , 'First player', 'playerOne');
+let playerTwo = PLAYER("url('puzzleP2.png')" , 'Second player', 'playerTwo');
 const PLAYERS = [playerOne, playerTwo];
 let currentPlayer = PLAYERS[1];
 
@@ -56,6 +57,9 @@ const GAMEBOARD = (() => {
     const GAME_FLOW_BOARD = () => {
         if (CHECK_IF_WINNER()){
             PLAYER_TURN_DISPLAY.textContent = `${currentPlayer.name} wins the game !`;
+            PLAYER_TURN_DISPLAY.style.color = '#F29200';
+            document.querySelector(`#${currentPlayer.varName}`).style.border = '2px solid';
+            document.querySelector(`#${currentPlayer.varName}`).style.borderColor='#2757A3 #F29200 #F29200 #2757A3';
             currentPlayer.score ++;
             SCOREBOARD.SCOREBOARD_DISPLAY();
         } 
@@ -65,6 +69,9 @@ const GAMEBOARD = (() => {
         else {
             currentPlayer === PLAYERS[0] ? currentPlayer = PLAYERS[1] : currentPlayer = PLAYERS[0];
             PLAYER_TURN_DISPLAY.textContent = `It's ${currentPlayer.name}'s turn!`;
+            document.querySelector(`#${currentPlayer.varName}`).style.color='orange';
+            currentPlayer ===  PLAYERS[0] ? document.querySelector('#playerTwo').style.color = '#2757A3' : 
+                document.querySelector('#playerOne').style.color = '#2757A3';
             }
     }
     const PLAY = () => {
@@ -92,6 +99,8 @@ const GAMEBOARD = (() => {
     const RESET = () => {
         const RESET_BTN = document.querySelector('#resetBtn');
         RESET_BTN.addEventListener('click', () => {
+            PLAYER_TURN_DISPLAY.style.textShadow = 'none';
+            document.querySelector(`#${currentPlayer.varName}`).style.border = 'none';
             RESET_BOARD();
             playerOne.score = 0;
             playerTwo.score = 0;
